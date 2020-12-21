@@ -14,11 +14,11 @@ public class Main {
             "new", "package", "private", "protected", "public",
             "return", "short", "static", "strictfp", "super", "switch",
             "synchronized", "this", "throw", "throws", "transient", "true",
-            "try", "void", "volatile", "while", "const", "let", "require", "exports"
+            "try", "void", "volatile", "while", "const", "let", "require", "exports", "fprintf", "load", "length", "ones", "zeros", "input", "plot", "numel"
     };
 
     public static void main(String[] args) {
-        readFile("/Users/max/Documents/Programming/machine_learning/house_prices/launch.m");
+        readFile("/Users/max/Documents/Programming/machine_learning/house_prices/compute_cost.m");
     }
 
 
@@ -34,17 +34,20 @@ public class Main {
                 if (line.trim().startsWith("//")) {
                     bw.write("<span class=\"line-count\">" + counter + "</span><span class=\"comment tab tab-" + tabFor + "\"> " + line + " </span>");
                 } else {
-                    if (line.trim().contains("}")) {
+                    if (line.trim().endsWith("end")) {
                         tabFor--;
                         if (tabFor < 0) {
                             tabFor = 0;
                         }
                     }
-                    String tmp = colorKeyWords(line);
+                    String tmp = colorStrings(line);
+                    tmp = colorKeyWords(tmp);
                     tmp = colorDigits(tmp);
+
                     tmp = colorFunctionsAndClasses(tmp);
+
                     bw.write("<span class=\"line-count\">" + counter + "</span><span class=\"tab tab-" + tabFor + "\"> " + tmp + " </span>\n");
-                    if (line.contains("{")) tabFor++;
+                    if ((line.contains("if") || line.contains("for")) && !line.contains("<span class=\"key-word\"")) tabFor++;
                 }
                 counter++;
             }
@@ -62,16 +65,42 @@ public class Main {
         return false;
     }
 
+    private static String colorStrings(String line) {
+        boolean firstQuote = true;
+        boolean found = false;
+        int beginInd = 0;
+        int endInd = line.length() - 1;
+        if (line.matches(".*\".*\".*") || line.matches(".*'.*'.*")) {
+            for (int i = 0; i < line.length() && !found; i++) {
+                if ((line.charAt(i) == '"' || line.charAt(i) == '\'')) {
+                    if (firstQuote) {
+                        beginInd = i;
+                        firstQuote = false;
+                    } else {
+                        endInd = i + 1;
+                        found = true;
+                    }
+                }
+            }
+            return line.substring(0, beginInd) + "<span class=\"string\">" + line.substring(beginInd, endInd) + "</span>" + line.substring(endInd);
+        } else return line;
+    }
+
     private static String colorKeyWords(String line) {
         String[] words = line.split("\\s+");
         StringBuilder tmp = new StringBuilder();
+        boolean skipping = false;
         for (String word : words) {
 
-            if (isKey(word)) {
-                tmp.append(" <span class=\"key-word\"> ").append(word).append(" </span> ");
+            if (!skipping) {
+                if (isKey(word)) {
+                    tmp.append(" <span class=\"key-word\"> ").append(word).append(" </span> ");
+                } else tmp.append(" ").append(word).append(" ");
             } else {
                 tmp.append(" ").append(word).append(" ");
             }
+            if (word.contains("<span")) skipping = true;
+            if (word.contains("</span>")) skipping = false;
         }
         return tmp.toString();
     }
@@ -81,7 +110,7 @@ public class Main {
         StringBuilder tmp = new StringBuilder();
         boolean skipping = false;
         for (String word : words) {
-            if (word.equals("<span"))
+            if (word.contains("<span"))
                 skipping = true;
 
 
@@ -104,7 +133,7 @@ public class Main {
                 tmp.append(" ").append(word).append(" ");
             }
 
-            if (word.contains(">"))
+            if (word.contains("</span>"))
                 skipping = false;
         }
 
@@ -117,16 +146,15 @@ public class Main {
         boolean skipping = false;
         for (String word : words) {
 
-            if (word.equals("<span"))
+            if (word.contains("<span"))
                 skipping = true;
 
             if (!skipping) {
                 if (startsWithCapitalLetter(word)) {
                     int endPoint = endPoint(word, false);
                     try {
-                        System.out.println(word);
-                        System.out.println(word.charAt(endPoint-1));
-                        if (word.charAt(endPoint-1) == ' ') {
+
+                        if (word.charAt(endPoint - 1) == ' ') {
                             tmp.append("<span class=\"function\">").append(word, 0, endPoint).append("</span> ");
                         } else {
                             tmp.append("<span class=\"function\">").append(word, 0, endPoint).append("</span> ");
@@ -151,7 +179,7 @@ public class Main {
                 tmp.append(" ").append(word).append(" ");
             }
 
-            if (word.contains(">"))
+            if (word.contains("</span>"))
                 skipping = false;
         }
 

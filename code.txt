@@ -1,198 +1,39 @@
-<span class="line-count">1</span><span class="tab tab-0">  <span  class="key-word">  const  </span>  {  validationResult  }  = <span class="function">require</span>('express-validator/check'); </span>
+<span class="line-count">1</span><span class="tab tab-0">  clear  ;  close  all;  clc  </span>
 <span class="line-count">2</span><span class="tab tab-0">    </span>
-<span class="line-count">3</span><span class="tab tab-0">  <span  class="key-word">  const  </span>  fileHelper  = require<span class="function"></span>('../util/file'); </span>
-<span class="line-count">4</span><span class="tab tab-0">  <span  class="key-word">  const  </span> <span class="function">Product</span>  = require<span class="function"></span>('../models/product'); </span>
-<span class="line-count">5</span><span class="tab tab-0">    </span>
-<span class="line-count">6</span><span class="comment tab tab-0"> // const mongoose = require('mongoose'); </span><span class="line-count">7</span><span class="tab tab-0">    </span>
-<span class="line-count">8</span><span class="tab tab-0">  exports.getAddProduct  =  (req,  res,  next)  =>  {  </span>
-<span class="line-count">9</span><span class="tab tab-1"> res<span class="function">.render</span>('admin/edit-product', {  </span>
-<span class="line-count">10</span><span class="tab tab-2">  pageTitle:  'Add <span class="function">Product',</span>  </span>
-<span class="line-count">11</span><span class="tab tab-2">  path:  '/admin/add-product',  </span>
-<span class="line-count">12</span><span class="tab tab-2">  editing:  false,  </span>
-<span class="line-count">13</span><span class="tab tab-2">  hasError:  false,  </span>
-<span class="line-count">14</span><span class="tab tab-2">  errorMessage:  null,  </span>
-<span class="line-count">15</span><span class="tab tab-2">  validationErrors:  []  </span>
-<span class="line-count">16</span><span class="tab tab-1">  });  </span>
-<span class="line-count">17</span><span class="tab tab-0">  };  </span>
-<span class="line-count">18</span><span class="tab tab-0">    </span>
-<span class="line-count">19</span><span class="tab tab-0">  exports.postAddProduct  =  (req,  res,  next)  =>  {  </span>
-<span class="line-count">20</span><span class="tab tab-1">    </span>
-<span class="line-count">21</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  title  =  req.body.title;  </span>
-<span class="line-count">22</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  price  =  req.body.price;  </span>
-<span class="line-count">23</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  image  =  req.file;  </span>
-<span class="line-count">24</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  description  =  req.body.description;  </span>
-<span class="line-count">25</span><span class="tab tab-1">    </span>
-<span class="line-count">26</span><span class="tab tab-1">  <span  class="key-word">  if  </span>  (!image)  {  </span>
-<span class="line-count">27</span><span class="tab tab-2">  <span  class="key-word">  return  </span> res<span class="function">.status</span>(<span class="digit">4</span><span  class="digit">2</span><span class="digit">2</span>)<span class="function">.render</span>('admin/edit-product', {  </span>
-<span class="line-count">28</span><span class="tab tab-3">  pageTitle:  'Add <span class="function">Product',</span>  </span>
-<span class="line-count">29</span><span class="tab tab-3">  path:  '/admin/add-product',  </span>
-<span class="line-count">30</span><span class="tab tab-3">  editing:  false,  </span>
-<span class="line-count">31</span><span class="tab tab-3">  hasError:  true,  </span>
-<span class="line-count">32</span><span class="tab tab-3">  product:  {  </span>
-<span class="line-count">33</span><span class="tab tab-4">  title:  title,  </span>
-<span class="line-count">34</span><span class="tab tab-4">  price:  price,  </span>
-<span class="line-count">35</span><span class="tab tab-4">  description:  description  </span>
-<span class="line-count">36</span><span class="tab tab-3">  },  </span>
-<span class="line-count">37</span><span class="tab tab-3">  errorMessage:  'This  type  of  the  file  is  not  supported!',  </span>
-<span class="line-count">38</span><span class="tab tab-2">  validationErrors:  [{  param:  'image'  }]  </span>
-<span class="line-count">39</span><span class="tab tab-2">  });  </span>
-<span class="line-count">40</span><span class="tab tab-1">  }  </span>
-<span class="line-count">41</span><span class="tab tab-1">    </span>
-<span class="line-count">42</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  errors  = <span class="function">validationResult</span>(req); </span>
-<span class="line-count">43</span><span class="tab tab-1">    </span>
-<span class="line-count">44</span><span class="tab tab-1">  <span  class="key-word">  if  </span> <span class="function"></span>(!errors.isEmpty()) {  </span>
-<span class="line-count">45</span><span class="tab tab-2">  <span  class="key-word">  return  </span> res<span class="function">.render</span>('admin/edit-product', {  </span>
-<span class="line-count">46</span><span class="tab tab-3">  pageTitle:  'Add <span class="function">Product',</span>  </span>
-<span class="line-count">47</span><span class="tab tab-3">  path:  '/admin/add-product',  </span>
-<span class="line-count">48</span><span class="tab tab-3">  editing:  false,  </span>
-<span class="line-count">49</span><span class="tab tab-3">  product:  {  </span>
-<span class="line-count">50</span><span class="tab tab-4">  title:  title,  </span>
-<span class="line-count">51</span><span class="tab tab-4">  price:  price,  </span>
-<span class="line-count">52</span><span class="tab tab-4">  description:  description  </span>
-<span class="line-count">53</span><span class="tab tab-3">  },  </span>
-<span class="line-count">54</span><span class="tab tab-3">  hasError:  true,  </span>
-<span class="line-count">55</span><span class="tab tab-3">  errorMessage: errors<span class="function">.array</span>()[<span class="digit">0</span>].msg,  </span>
-<span class="line-count">56</span><span class="tab tab-3">  validationErrors:  []  </span>
-<span class="line-count">57</span><span class="tab tab-2">  });  </span>
-<span class="line-count">58</span><span class="tab tab-1">  }  </span>
-<span class="line-count">59</span><span class="tab tab-1">    </span>
-<span class="line-count">60</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  imageURL  =  image.path;  </span>
-<span class="line-count">61</span><span class="tab tab-1">    </span>
-<span class="line-count">62</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  product  =  <span  class="key-word">  new  </span> <span class="function">Product</span> ({ </span>
-<span class="line-count">63</span><span class="tab tab-2">  title:  title,  </span>
-<span class="line-count">64</span><span class="tab tab-2">  price:  price,  </span>
-<span class="line-count">65</span><span class="tab tab-2">  description:  description,  </span>
-<span class="line-count">66</span><span class="tab tab-2">  imageURL:  imageURL,  </span>
-<span class="line-count">67</span><span class="tab tab-2">  userId:  req.user._id  </span>
-<span class="line-count">68</span><span class="tab tab-1">  });  </span>
-<span class="line-count">69</span><span class="tab tab-1">  product  </span>
-<span class="line-count">70</span><span class="tab tab-1"> <span class="function">.save</span>() </span>
-<span class="line-count">71</span><span class="tab tab-1"> <span class="function">.then</span>(result =>  {  </span>
-<span class="line-count">72</span><span class="tab tab-2"> console<span class="function">.log</span>('Created<span class="function">Product');</span>  </span>
-<span class="line-count">73</span><span class="tab tab-2"> res<span class="function">.redirect</span>('/admin/products'); </span>
-<span class="line-count">74</span><span class="tab tab-1">  })  </span>
-<span class="line-count">75</span><span class="tab tab-1"> <span class="function">.catch</span>(err =>  {  </span>
-<span class="line-count">76</span><span class="tab tab-2">  <span  class="key-word">  const  </span>  error  =  <span  class="key-word">  new  </span> <span class="function">Error</span> (err); </span>
-<span class="line-count">77</span><span class="tab tab-2">  error.httpStatusCode  =  <span  class="digit">5</span><span  class="digit">0</span><span  class="digit">0</span>;  </span>
-<span class="line-count">78</span><span class="tab tab-2">  <span  class="key-word">  return  </span> <span class="function">next</span>(error); </span>
-<span class="line-count">79</span><span class="tab tab-1">  });  </span>
-<span class="line-count">80</span><span class="tab tab-0">  };  </span>
-<span class="line-count">81</span><span class="tab tab-0">    </span>
-<span class="line-count">82</span><span class="tab tab-0">  exports.getProducts  =  (req,  res,  next)  =>  {  </span>
-<span class="line-count">83</span><span class="tab tab-1">    </span>
-<span class="line-count">84</span><span class="tab tab-1"> <span class="function">Product.</span> find() </span>
-<span class="line-count">85</span><span class="tab tab-1"> <span class="function">.then</span>(products =>  {  </span>
-<span class="line-count">86</span><span class="tab tab-2"> res<span class="function">.render</span>('admin/products', {  </span>
-<span class="line-count">87</span><span class="tab tab-3">  prods:  products,  </span>
-<span class="line-count">88</span><span class="tab tab-3">  pageTitle:  'Admin <span class="function">Products',</span>  </span>
-<span class="line-count">89</span><span class="tab tab-3">  path:  '/admin/products'  </span>
-<span class="line-count">90</span><span class="tab tab-2">  });  </span>
-<span class="line-count">91</span><span class="tab tab-1"> })<span class="function">.catch</span>(err =>  {  </span>
-<span class="line-count">92</span><span class="tab tab-2">  <span  class="key-word">  const  </span>  error  =  <span  class="key-word">  new  </span> <span class="function">Error</span> (err); </span>
-<span class="line-count">93</span><span class="tab tab-2">  error.httpStatusCode  =  <span  class="digit">5</span><span  class="digit">0</span><span  class="digit">0</span>;  </span>
-<span class="line-count">94</span><span class="tab tab-2">  <span  class="key-word">  return  </span> <span class="function">next</span>(error); </span>
-<span class="line-count">95</span><span class="tab tab-1">  });  </span>
-<span class="line-count">96</span><span class="tab tab-0">  };  </span>
-<span class="line-count">97</span><span class="tab tab-0">    </span>
-<span class="line-count">98</span><span class="tab tab-0">  exports.getEditProduct  =  (req,  res,  next)  =>  {  </span>
-<span class="line-count">99</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  editMode  =  req.query.edit;  </span>
-<span class="line-count">100</span><span class="tab tab-1">  <span  class="key-word">  if  </span>  (!editMode)  {  </span>
-<span class="line-count">101</span><span class="tab tab-2">  <span  class="key-word">  return  </span> res<span class="function">.redirect</span>('/'); </span>
-<span class="line-count">102</span><span class="tab tab-1">  }  </span>
-<span class="line-count">103</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  productId  =  req.params.productId;  </span>
-<span class="line-count">104</span><span class="tab tab-1"> <span class="function">Product.</span> findById(productId) </span>
-<span class="line-count">105</span><span class="tab tab-1"> <span class="function">.then</span>(product =>  {  </span>
-<span class="line-count">106</span><span class="tab tab-2">  <span  class="key-word">  if  </span>  (!product)  {  </span>
-<span class="line-count">107</span><span class="tab tab-3">  <span  class="key-word">  return  </span> res<span class="function">.redirect</span>('/'); </span>
-<span class="line-count">108</span><span class="tab tab-2">  }  </span>
-<span class="line-count">109</span><span class="tab tab-2"> res<span class="function">.render</span>('admin/edit-product', {  </span>
-<span class="line-count">110</span><span class="tab tab-3">  pageTitle:  'Add <span class="function">Product',</span>  </span>
-<span class="line-count">111</span><span class="tab tab-3">  path:  '/admin/edit-product',  </span>
-<span class="line-count">112</span><span class="tab tab-3">  editing:  editMode,  </span>
-<span class="line-count">113</span><span class="tab tab-3">  product:  product,  </span>
-<span class="line-count">114</span><span class="tab tab-3">  hasError:  false,  </span>
-<span class="line-count">115</span><span class="tab tab-3">  errorMessage:  null,  </span>
-<span class="line-count">116</span><span class="tab tab-3">  validationErrors:  []  </span>
-<span class="line-count">117</span><span class="tab tab-2">  });  </span>
-<span class="line-count">118</span><span class="tab tab-1"> })<span class="function">.catch</span>(err =>  {  </span>
-<span class="line-count">119</span><span class="tab tab-2">  <span  class="key-word">  const  </span>  error  =  <span  class="key-word">  new  </span> <span class="function">Error</span> (err); </span>
-<span class="line-count">120</span><span class="tab tab-2">  error.httpStatusCode  =  <span  class="digit">5</span><span  class="digit">0</span><span  class="digit">0</span>;  </span>
-<span class="line-count">121</span><span class="tab tab-2">  <span  class="key-word">  return  </span> <span class="function">next</span>(error); </span>
-<span class="line-count">122</span><span class="tab tab-1">  });  </span>
-<span class="line-count">123</span><span class="tab tab-0">  };  </span>
-<span class="line-count">124</span><span class="tab tab-0">    </span>
-<span class="line-count">125</span><span class="tab tab-0">  exports.postEditProduct  =  (req,  res,  next)  =>  {  </span>
-<span class="line-count">126</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  productId  =  req.body.productId;  </span>
-<span class="line-count">127</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  updatedTitle  =  req.body.title;  </span>
-<span class="line-count">128</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  image  =  req.file;  </span>
-<span class="line-count">129</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  updatedPrice  =  req.body.price;  </span>
-<span class="line-count">130</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  updatedDescription  =  req.body.description;  </span>
-<span class="line-count">131</span><span class="tab tab-1">    </span>
-<span class="line-count">132</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  errors  = <span class="function">validationResult</span>(req); </span>
-<span class="line-count">133</span><span class="tab tab-1">    </span>
-<span class="line-count">134</span><span class="tab tab-1">  <span  class="key-word">  if  </span> <span class="function"></span>(!errors.isEmpty()) {  </span>
-<span class="line-count">135</span><span class="tab tab-2">  <span  class="key-word">  return  </span> res<span class="function">.status</span>(<span class="digit">4</span><span  class="digit">2</span><span class="digit">2</span>)<span class="function">.render</span>('admin/edit-product', {  </span>
-<span class="line-count">136</span><span class="tab tab-3">  pageTitle:  'Edit <span class="function">Product',</span>  </span>
-<span class="line-count">137</span><span class="tab tab-3">  path:  '/admin/edit-product',  </span>
-<span class="line-count">138</span><span class="tab tab-3">  editing:  true,  </span>
-<span class="line-count">139</span><span class="tab tab-3">  hasError:  true,  </span>
-<span class="line-count">140</span><span class="tab tab-3">  errorMessage: errors<span class="function">.array</span>()[<span class="digit">0</span>].msg,  </span>
-<span class="line-count">141</span><span class="tab tab-3">  product:  {  </span>
-<span class="line-count">142</span><span class="tab tab-4">  title:  updatedTitle,  </span>
-<span class="line-count">143</span><span class="tab tab-4">  price:  updatedPrice,  </span>
-<span class="line-count">144</span><span class="tab tab-4">  description:  updatedDescription,  </span>
-<span class="line-count">145</span><span class="tab tab-4">  _id:  productId  </span>
-<span class="line-count">146</span><span class="tab tab-3">  }  </span>
-<span class="line-count">147</span><span class="tab tab-2">  });  </span>
-<span class="line-count">148</span><span class="tab tab-1">  }  </span>
-<span class="line-count">149</span><span class="tab tab-1">    </span>
-<span class="line-count">150</span><span class="tab tab-1"> <span class="function">Product.</span> findById(productId) </span>
-<span class="line-count">151</span><span class="tab tab-1"> <span class="function">.then</span>(product =>  {  </span>
-<span class="line-count">152</span><span class="tab tab-2">  <span  class="key-word">  if  </span> <span class="function"></span>(product.userId.toString() !== req<span class="function">.user._id.toString</span>()) {  </span>
-<span class="line-count">153</span><span class="tab tab-3">  <span  class="key-word">  return  </span> res<span class="function">.redirect</span>('/'); </span>
-<span class="line-count">154</span><span class="tab tab-2">  }  </span>
-<span class="line-count">155</span><span class="tab tab-2">    </span>
-<span class="line-count">156</span><span class="tab tab-2">  product.title  =  updatedTitle;  </span>
-<span class="line-count">157</span><span class="tab tab-2">  product.price  =  updatedPrice;  </span>
-<span class="line-count">158</span><span class="tab tab-2">  product.description  =  updatedDescription;  </span>
-<span class="line-count">159</span><span class="tab tab-2">  <span  class="key-word">  if  </span>  (image)  {  </span>
-<span class="line-count">160</span><span class="tab tab-3"> fileHelper<span class="function">.deleteFile</span>(product.imageURL); </span>
-<span class="line-count">161</span><span class="tab tab-3">  product.imageURL  =  image.path;  </span>
-<span class="line-count">162</span><span class="tab tab-2">  }  </span>
-<span class="line-count">163</span><span class="tab tab-2">  product.userId  =  req.session.user._id;  </span>
-<span class="line-count">164</span><span class="tab tab-2">    </span>
-<span class="line-count">165</span><span class="tab tab-2">  <span  class="key-word">  return  </span> product<span class="function">.save</span>().then(result =>  {  </span>
-<span class="line-count">166</span><span class="tab tab-3"> console<span class="function">.log</span>('UPDATED<span class="function">PRODUCT')</span>  </span>
-<span class="line-count">167</span><span class="tab tab-3"> res<span class="function">.redirect</span>('/admin/products'); </span>
-<span class="line-count">168</span><span class="tab tab-2"> })<span class="function">.catch</span>(err =>  {  </span>
-<span class="line-count">169</span><span class="tab tab-3"> console<span class="function">.log</span>(err); </span>
-<span class="line-count">170</span><span class="tab tab-2">  });  </span>
-<span class="line-count">171</span><span class="tab tab-1">  })  </span>
-<span class="line-count">172</span><span class="tab tab-1"> <span class="function">.catch</span>(err =>  {  </span>
-<span class="line-count">173</span><span class="tab tab-2">  <span  class="key-word">  const  </span>  error  =  <span  class="key-word">  new  </span> <span class="function">Error</span> (err); </span>
-<span class="line-count">174</span><span class="tab tab-2">  error.httpStatusCode  =  <span  class="digit">5</span><span  class="digit">0</span><span  class="digit">0</span>;  </span>
-<span class="line-count">175</span><span class="tab tab-2">  <span  class="key-word">  return  </span> <span class="function">next</span>(error); </span>
-<span class="line-count">176</span><span class="tab tab-1">  });  </span>
-<span class="line-count">177</span><span class="tab tab-0">  };  </span>
-<span class="line-count">178</span><span class="tab tab-0">    </span>
-<span class="line-count">179</span><span class="tab tab-0">  exports.deleteProduct  =  (req,  res,  next)  =>  {  </span>
-<span class="line-count">180</span><span class="tab tab-1">  <span  class="key-word">  const  </span>  productId  =  req.params.productId;  </span>
-<span class="line-count">181</span><span class="tab tab-1"> <span class="function">Product.</span> findById(productId) </span>
-<span class="line-count">182</span><span class="tab tab-1"> <span class="function">.then</span>(product =>  {  </span>
-<span class="line-count">183</span><span class="tab tab-2">  <span  class="key-word">  if  </span>  (!product)  {  </span>
-<span class="line-count">184</span><span class="tab tab-3"> <span class="function">next</span>(new<span class="function">Error</span> ('Product<span class="function">Not</span> <span class="function">Found'));</span>  </span>
-<span class="line-count">185</span><span class="tab tab-2">  }  </span>
-<span class="line-count">186</span><span class="tab tab-1">  <span  class="key-word">  return  </span> <span class="function">Product.</span> deleteOne({ _id:  productId,  userId:  req.user._id  })  </span>
-<span class="line-count">187</span><span class="tab tab-1">  })  </span>
-<span class="line-count">188</span><span class="tab tab-1"> <span class="function">.then</span>(result =>  {  </span>
-<span class="line-count">189</span><span class="tab tab-2"> fileHelper<span class="function">.deleteFile</span>(product.imageURL); </span>
-<span class="line-count">190</span><span class="tab tab-2"> res<span class="function">.status</span>(<span class="digit">2</span><span  class="digit">0</span><span class="digit">0</span>)<span class="function">.json</span>({ </span>
-<span class="line-count">191</span><span class="tab tab-3">  message:  'Success!'  </span>
-<span class="line-count">192</span><span class="tab tab-2">  });  </span>
-<span class="line-count">193</span><span class="tab tab-1">  })  </span>
-<span class="line-count">194</span><span class="tab tab-1"> <span class="function">.catch</span>(err =>  {  </span>
-<span class="line-count">195</span><span class="tab tab-2"> res<span class="function">.status</span>(<span class="digit">5</span><span  class="digit">0</span><span class="digit">0</span>)<span class="function">.json</span>({ </span>
-<span class="line-count">196</span><span class="tab tab-3">  message:  'Deletion  failed!'  </span>
-<span class="line-count">197</span><span class="tab tab-2">  });  </span>
-<span class="line-count">198</span><span class="tab tab-1">  });  </span>
-<span class="line-count">199</span><span class="tab tab-0">  };  </span>
+<span class="line-count">3</span><span class="tab tab-0">  fprintf(<span  class="string">'Loading  data  ...\n'</span>);  </span>
+<span class="line-count">4</span><span class="tab tab-0">    </span>
+<span class="line-count">5</span><span class="tab tab-0">  data  =  load(<span  class="string">'training_set.txt'</span>);  </span>
+<span class="line-count">6</span><span class="tab tab-0"> <span class="function">X</span>  = <span class="function">data</span>(:, <span  class="digit">1</span>:<span  class="digit">2</span>);  </span>
+<span class="line-count">7</span><span class="tab tab-0">  y  = <span class="function">data</span>(:, <span  class="digit">3</span>);  </span>
+<span class="line-count">8</span><span class="tab tab-0">  m  = <span class="function">length</span>(y); </span>
+<span class="line-count">9</span><span class="tab tab-0">  fprintf(<span  class="string">'Normalizing  parameters  ...\n'</span>);  </span>
+<span class="line-count">10</span><span class="tab tab-0">  [X  mu  sigma]  = <span class="function">normalize</span>(X); </span>
+<span class="line-count">11</span><span class="tab tab-0"> <span class="function">X</span>  = <span class="function">[ones</span>(m, <span  class="digit">1</span>) <span class="function">X];</span>  </span>
+<span class="line-count">12</span><span class="tab tab-0">    </span>
+<span class="line-count">13</span><span class="tab tab-0">  theta  = <span class="function">zeros</span>(size(X, <span  class="digit">2</span>),  <span  class="digit">1</span>);  </span>
+<span class="line-count">14</span><span class="tab tab-0">  alpha  =  <span  class="digit">0</span>.<span  class="digit">0</span><span  class="digit">0</span><span  class="digit">3</span>;  </span>
+<span class="line-count">15</span><span class="tab tab-0">  num_iters  =  <span  class="digit">2</span><span  class="digit">5</span><span  class="digit">0</span><span  class="digit">0</span>;  </span>
+<span class="line-count">16</span><span class="tab tab-0">    </span>
+<span class="line-count">17</span><span class="tab tab-0">  fprintf(<span  class="string">'Running  gradient  descent  ...\n'</span>);  </span>
+<span class="line-count">18</span><span class="tab tab-0">  [theta, <span class="function">J_history]</span>  = <span class="function">gradient_descent</span>(X, y,  theta,  alpha,  num_iters);  </span>
+<span class="line-count">19</span><span class="tab tab-0">  fprintf(<span  class="string">'Theta  vector  is:  \n'</span>);  </span>
+<span class="line-count">20</span><span class="tab tab-0">  theta  </span>
+<span class="line-count">21</span><span class="tab tab-0">  fprintf(<span  class="string">'Program  paused.  Press  enter  to  continue.\n'</span>);  </span>
+<span class="line-count">22</span><span class="tab tab-0">  pause;  </span>
+<span class="line-count">23</span><span class="tab tab-0">  u_ans  =  input(<span  class="string">'Do  you  want  to  see  the  graph  of  cost  function?(1  for  yes/0  for  no)  '</span>);  </span>
+<span class="line-count">24</span><span class="tab tab-0">  <span  class="key-word">  if  </span>  u_ans  ==  <span  class="digit">1</span>  </span>
+<span class="line-count">25</span><span class="tab tab-1">  figure(<span  class="digit">1</span>);  </span>
+<span class="line-count">26</span><span class="tab tab-1">  plot(<span  class="digit">1</span>:numel(J_history), <span class="function">J_history,</span>  <span  class="string">'-r'</span>,  'LineWidth',  <span  class="digit">2</span>);  </span>
+<span class="line-count">27</span><span class="tab tab-0">  end  </span>
+<span class="line-count">28</span><span class="tab tab-0">    </span>
+<span class="line-count">29</span><span class="tab tab-0">  fprintf(<span  class="string">'Please,  enter  the  parameters  of  your  house:\n'</span>);  </span>
+<span class="line-count">30</span><span class="tab tab-0">  size  =  input(<span  class="string">'Size  (feet  squared):  '</span>);  </span>
+<span class="line-count">31</span><span class="tab tab-0">  bedrooms  =  input(<span  class="string">'Number  of  bedrooms:  '</span>);  </span>
+<span class="line-count">32</span><span class="tab tab-0">  params  =  [<span  class="digit">1</span>  size  bedrooms];  </span>
+<span class="line-count">33</span><span class="tab tab-0">  <span  class="key-word">  for  </span>  i=<span  class="digit">2</span>:<span  class="digit">3</span>  </span>
+<span class="line-count">34</span><span class="tab tab-1"> <span class="function">params</span>(i) = <span class="function"></span>(params(i) -  mu(i-<span  class="digit">1</span>))*(<span  class="digit">1</span>/sigma(i-<span  class="digit">1</span>));  </span>
+<span class="line-count">35</span><span class="tab tab-0">  end  </span>
+<span class="line-count">36</span><span class="tab tab-0">    </span>
+<span class="line-count">37</span><span class="tab tab-0">  price  =  params  *  theta;  </span>
+<span class="line-count">38</span><span class="tab tab-0">  fprintf([<span  class="string">'Predicted  price  of  the  house  '</span>  ...  </span>
+<span class="line-count">39</span><span class="tab tab-0">  <span  class="string">':\n  $%f\n'</span>], <span class="function">ceil</span>(price)); </span>
